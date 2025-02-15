@@ -22,24 +22,45 @@ interface Student {
 class Gradebook<T extends Student> {
   students = []
 
-  addStudent(student) {
-
+  addStudent(student:T):string { 
+    this.students.push(student)
+    
+    return `${student.name} added to the gradebook.`;
+    
   }
 
-  addGrade(id, grade) {
+  addGrade(id: number, grade:Grade):string {
+    const st:T = this.students.find((element) => element.id === id)
+   
+    st.grades.push(grade)
+    
+    return `Grade recorded for ${grade.subject}`
+  }
+  
+  getAverageGrade(id:number) {
+    const st = this.students.find((element) => element.id === id)
 
+    // console.log('here are the grades',st.grades);
+    const total = st.grades.reduce((sum:number, item: Grade) => sum + item.grade, 0)
+    const average = total / st.grades.length
+  
+    return average
+  }
+  
+  getStudentGrades(id:number) {
+    const st = this.students.find((element) => element.id === id)
+    //update use map
+    // console.log(st.grades);
+    
+    return st.grades
   }
 
-  getAverageGrade(id) {
-
-  }
-
-  getStudentGrades(id) {
-
-  }
-
-  updateSubjectGrade(id, subject, newGrade) {
-
+  updateSubjectGrade(id:number, subject:string, newGrade:number) {
+    const st = this.students.find((element) => element.id === id) // map next
+    const findSub = st.grades.find((element: Grade) => element.subject === subject) //change to map for update
+    findSub.grade = newGrade
+    
+    return `${st.name} ${findSub.subject} grade updated to ${findSub.grade}`
   }
 }
 

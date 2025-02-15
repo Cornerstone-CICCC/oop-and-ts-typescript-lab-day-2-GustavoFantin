@@ -18,24 +18,57 @@ interface Product {
 class InventoryManager<T extends Product> {
   products = []
 
-  addProduct(product) {
+  addProduct(product: T) {
+    this.products.push(product)
+    // console.log(product.id);
+    
+    return `Product ${product.name} added successfully!`
+  }
+  
+  updateProduct(id: number, update: Partial<Product>) {
+    const updatedProducts = this.products.map(product => {
+      if (product.id === id) {
+        return {
+          ...product,
+          ...update
+        }
+      } else {
+        return product
+      }
+    })
 
+    this.products = updatedProducts
+    
+    return `Product ${id} updated successfully!`
   }
 
-  updateProduct(id, update) {
+  getProduct(id:number) {
+    const productInfo = this.products.map(product => {
+      if (product.id === id) {
+        return {
+          ...product
+        }
+      } else {
+        return product
+      }
+    })
 
-  }
-
-  getProduct(id) {
-
+    return productInfo
   }
 
   getAllProducts() {
+    const productList = this.products.map(product => {
+      return product.name
+    })
 
+    return productList
+    
   }
 
-  removeProduct(id) {
-
+  removeProduct(id: number) {
+    this.products = this.products.filter(product =>  product.id !== id)
+   
+    return `Product ${id} removed successfully!`
   }
 }
 
